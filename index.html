@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DigiLab Solutions — Formulaires</title>
+<title>DigiLab Solutions — Formulaire Interne</title>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -61,25 +61,16 @@
     color: var(--orange);
     font-style: normal;
   }
-  .nav-tabs {
-    display: flex; gap: 4px;
-  }
-  .nav-tab {
-    padding: 8px 20px;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    font-family: 'Sora', sans-serif;
-    font-size: 13px;
+  .nav-badge {
+    background: rgba(245,166,35,0.15);
+    border: 1px solid rgba(245,166,35,0.3);
+    border-radius: 100px;
+    padding: 4px 14px;
+    font-size: 11px;
     font-weight: 600;
-    transition: all 0.2s;
-    background: transparent;
-    color: #aaa;
-  }
-  .nav-tab:hover { color: var(--white); }
-  .nav-tab.active {
-    background: var(--orange);
-    color: var(--black);
+    color: var(--orange);
+    letter-spacing: 1px;
+    text-transform: uppercase;
   }
 
   /* ── HERO ── */
@@ -122,18 +113,6 @@
     padding: 40px 24px 80px;
   }
 
-  /* ── FORM PANEL ── */
-  .form-panel {
-    display: none;
-    animation: fadeUp 0.35s ease;
-  }
-  .form-panel.active { display: block; }
-
-  @keyframes fadeUp {
-    from { opacity:0; transform: translateY(16px); }
-    to   { opacity:1; transform: translateY(0); }
-  }
-
   /* ── FORM HEADER ── */
   .form-header {
     display: flex; align-items: center; gap: 16px;
@@ -147,12 +126,8 @@
     font-size: 22px;
     flex-shrink: 0;
   }
-  .form-header h2 {
-    font-size: 22px; font-weight: 700;
-  }
-  .form-header p {
-    font-size: 13px; color: var(--gray-text); margin-top: 3px;
-  }
+  .form-header h2 { font-size: 22px; font-weight: 700; }
+  .form-header p  { font-size: 13px; color: var(--gray-text); margin-top: 3px; }
 
   /* ── SECTION TITLE ── */
   .section-title {
@@ -370,11 +345,11 @@
     white-space: pre-wrap;
     word-break: break-all;
     line-height: 1.7;
-    max-height: 300px;
+    max-height: 360px;
     overflow-y: auto;
   }
-  .copy-box pre span.key   { color: var(--orange); }
-  .copy-box pre span.val   { color: #7ed56f; }
+  .copy-box pre span.key { color: var(--orange); }
+  .copy-box pre span.val { color: #7ed56f; }
 
   .btn-copy {
     margin-top: 12px;
@@ -391,7 +366,7 @@
   }
   .btn-copy:hover { background: var(--orange); color: var(--black); border-color: var(--orange); }
 
-  /* ── SUCCESS ── */
+  /* ── SUCCESS TOAST ── */
   .success-toast {
     position: fixed; bottom: 30px; right: 30px;
     background: var(--green);
@@ -421,6 +396,23 @@
   }
   .info-box strong { font-weight: 700; }
 
+  /* ── AFFECTÉ À ── */
+  .affected-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .affected-chip {
+    padding: 7px 16px;
+    border-radius: 100px;
+    border: 2px solid var(--gray-2);
+    background: var(--white);
+    font-size: 12px; font-weight: 600;
+    cursor: pointer; transition: all 0.18s;
+    color: #555;
+  }
+  .affected-chip.sel {
+    background: #1a1a1a;
+    border-color: #1a1a1a;
+    color: var(--orange);
+  }
+
   @media (max-width: 600px) {
     .grid-2, .grid-3 { grid-template-columns: 1fr; }
     nav { padding: 0 16px; }
@@ -436,24 +428,16 @@
     <div class="dot"></div>
     <span>Digi<em>Lab</em> <span style="color:#666;font-weight:300">Solutions</span></span>
   </div>
-  <div class="nav-tabs">
-    <button class="nav-tab active" onclick="switchTab('interne', this)">🏢 Formulaire Interne</button>
-    <button class="nav-tab" onclick="switchTab('client', this)">📋 Brief Client</button>
-  </div>
+  <div class="nav-badge">🏢 Usage Interne</div>
 </nav>
 
 <div class="hero">
   <div class="hero-badge">● DigiLab Solutions</div>
-  <h1>Formulaires <span>Clients</span></h1>
-  <p>Formulaire interne équipe · Brief client — données liées au fichier Suivi</p>
+  <h1>Formulaire <span>Interne</span></h1>
+  <p>Saisie équipe · Les données s'exportent vers le fichier Suivi Clients &amp; Offres</p>
 </div>
 
 <div class="forms-wrap">
-
-<!-- ════════════════════════════════════════════
-     FORMULAIRE INTERNE
-════════════════════════════════════════════ -->
-<div class="form-panel active" id="panel-interne">
 
   <div class="form-header">
     <div class="form-icon">🏢</div>
@@ -467,14 +451,18 @@
     <strong>Comment utiliser ?</strong> Remplis le formulaire → clique <em>Générer la ligne</em> → copie le résultat → colle-le dans ton Google Sheets (ligne suivante disponible).
   </div>
 
-  <!-- IDENTITÉ -->
+  <!-- ── IDENTITÉ CLIENT ── -->
   <div class="section-title"><div class="bar"></div><h3>Identité Client</h3></div>
   <div class="card">
     <div class="grid-2">
-      <div class="field"><label>Nom Client <span class="req">*</span></label><input id="i-nom" type="text" placeholder="Ex: Fimochic SARL"></div>
-      <div class="field"><label>Interlocuteur <span class="req">*</span></label><input id="i-contact" type="text" placeholder="Prénom NOM"></div>
-      <div class="field"><label>Téléphone</label><input id="i-tel" type="text" placeholder="+216 XX XXX XXX"></div>
-      <div class="field"><label>Email</label><input id="i-email" type="email" placeholder="contact@client.tn"></div>
+      <div class="field">
+        <label>Nom Client <span class="req">*</span></label>
+        <input id="i-nom" type="text" placeholder="Ex: Fimochic SARL">
+      </div>
+      <div class="field">
+        <label>Interlocuteur <span class="req">*</span></label>
+        <input id="i-contact" type="text" placeholder="Prénom NOM">
+      </div>
       <div class="field">
         <label>Secteur</label>
         <select id="i-secteur">
@@ -495,7 +483,24 @@
     </div>
   </div>
 
-  <!-- RÉSEAUX -->
+  <!-- ── AFFECTÉ À ── -->
+  <div class="section-title"><div class="bar"></div><h3>Affecté à</h3></div>
+  <div class="card">
+    <div class="field">
+      <label>Membre de l'équipe en charge <span class="req">*</span></label>
+      <div class="affected-chips" id="i-affected-chips">
+        <span class="affected-chip" data-val="imen"   onclick="selectAffected(this)">imen</span>
+        <span class="affected-chip" data-val="Radhia"  onclick="selectAffected(this)">Radhia</span>
+        <span class="affected-chip" data-val="Yessmine" onclick="selectAffected(this)">Yessmine</span>
+        <span class="affected-chip" data-val="Hassen"  onclick="selectAffected(this)">Hassen</span>
+        <span class="affected-chip" data-val="Maissa"  onclick="selectAffected(this)">Maissa</span>
+      </div>
+      <input type="hidden" id="i-affected" value="">
+      <input id="i-affected-custom" type="text" placeholder="Autre — saisir un nom…" style="margin-top:10px" oninput="onCustomAffected(this)">
+    </div>
+  </div>
+
+  <!-- ── RÉSEAUX SOCIAUX ── -->
   <div class="section-title"><div class="bar"></div><h3>Réseaux Sociaux</h3></div>
   <div class="card">
     <div class="grid-2">
@@ -506,47 +511,68 @@
     </div>
   </div>
 
-  <!-- CONTRAT -->
+  <!-- ── CONTRAT ── -->
   <div class="section-title"><div class="bar"></div><h3>Contrat</h3></div>
   <div class="card">
     <div class="grid-3">
-      <div class="field">
+      <div class="field" style="grid-column:1/-1">
         <label>Statut Offre</label>
         <div class="statut-chips" id="i-statut-chips">
-          <span class="statut-chip" data-val="Prospect" onclick="selectStatut(this,'i')">Prospect</span>
-          <span class="statut-chip" data-val="Offre envoyée" onclick="selectStatut(this,'i')">Offre envoyée</span>
-          <span class="statut-chip" data-val="En cours" onclick="selectStatut(this,'i')">En cours</span>
-          <span class="statut-chip" data-val="En pause" onclick="selectStatut(this,'i')">En pause</span>
-          <span class="statut-chip" data-val="Terminé" onclick="selectStatut(this,'i')">Terminé</span>
-          <span class="statut-chip" data-val="Annulé" onclick="selectStatut(this,'i')">Annulé</span>
+          <span class="statut-chip" data-val="Prospect"      onclick="selectStatut(this)">Prospect</span>
+          <span class="statut-chip" data-val="Offre envoyée" onclick="selectStatut(this)">Offre envoyée</span>
+          <span class="statut-chip" data-val="En cours"      onclick="selectStatut(this)">En cours</span>
+          <span class="statut-chip" data-val="En pause"      onclick="selectStatut(this)">En pause</span>
+          <span class="statut-chip" data-val="Terminé"       onclick="selectStatut(this)">Terminé</span>
+          <span class="statut-chip" data-val="Annulé"        onclick="selectStatut(this)">Annulé</span>
         </div>
         <input type="hidden" id="i-statut" value="">
       </div>
-      <div class="field"><label>Date Signature</label><input id="i-date-sig" type="date"></div>
-      <div class="field"><label>Date Fin</label><input id="i-date-fin" type="date"></div>
+      <div class="field">
+        <label>Date Signature</label>
+        <input id="i-date-sig" type="date">
+      </div>
+      <div class="field">
+        <label>Date Fin</label>
+        <input id="i-date-fin" type="date" oninput="calcDuree()">
+      </div>
+      <div class="field auto">
+        <label>Durée (mois)</label>
+        <input id="i-duree" readonly value="0">
+      </div>
     </div>
   </div>
 
-  <!-- CONTENU -->
+  <!-- ── CADENCE DE CONTENU ── -->
   <div class="section-title"><div class="bar"></div><h3>Cadence de Contenu</h3></div>
   <div class="card">
     <div class="grid-3">
-      <div class="field"><label>Posts statiques /mois</label><div class="stepper"><button onclick="step('i-posts',-1)">−</button><input type="number" id="i-posts" value="0" min="0" oninput="calcAuto()"><button onclick="step('i-posts',1)">+</button></div></div>
+      <div class="field"><label>Posts /mois</label><div class="stepper"><button onclick="step('i-posts',-1)">−</button><input type="number" id="i-posts" value="0" min="0" oninput="calcAuto()"><button onclick="step('i-posts',1)">+</button></div></div>
       <div class="field auto"><label>Posts /sem</label><input id="i-posts-sem" readonly value="0"></div>
+      <div class="field"></div>
+
       <div class="field"><label>Reels /mois</label><div class="stepper"><button onclick="step('i-reels',-1)">−</button><input type="number" id="i-reels" value="0" min="0" oninput="calcAuto()"><button onclick="step('i-reels',1)">+</button></div></div>
       <div class="field auto"><label>Reels /sem</label><input id="i-reels-sem" readonly value="0"></div>
+      <div class="field"></div>
+
       <div class="field"><label>Stories /mois</label><div class="stepper"><button onclick="step('i-stories',-1)">−</button><input type="number" id="i-stories" value="0" min="0" oninput="calcAuto()"><button onclick="step('i-stories',1)">+</button></div></div>
       <div class="field auto"><label>Stories /sem</label><input id="i-stories-sem" readonly value="0"></div>
+      <div class="field"></div>
+
       <div class="field"><label>Carrousels /mois</label><div class="stepper"><button onclick="step('i-carrou',-1)">−</button><input type="number" id="i-carrou" value="0" min="0" oninput="calcAuto()"><button onclick="step('i-carrou',1)">+</button></div></div>
       <div class="field auto"><label>Carrousels /sem</label><input id="i-carrou-sem" readonly value="0"></div>
+      <div class="field"></div>
+
       <div class="field"><label>Articles LinkedIn /mois</label><div class="stepper"><button onclick="step('i-articles',-1)">−</button><input type="number" id="i-articles" value="0" min="0" oninput="calcAuto()"><button onclick="step('i-articles',1)">+</button></div></div>
       <div class="field"><label>Publ. Promo /mois</label><div class="stepper"><button onclick="step('i-promo',-1)">−</button><input type="number" id="i-promo" value="0" min="0" oninput="calcAuto()"><button onclick="step('i-promo',1)">+</button></div></div>
+      <div class="field"></div>
+
       <div class="field auto"><label>TOTAL publ. /mois</label><input id="i-total-mois" readonly value="0"></div>
       <div class="field auto"><label>TOTAL publ. /sem</label><input id="i-total-sem" readonly value="0"></div>
+      <div class="field"></div>
     </div>
   </div>
 
-  <!-- CM -->
+  <!-- ── COMMUNITY MANAGEMENT ── -->
   <div class="section-title"><div class="bar"></div><h3>Community Management</h3></div>
   <div class="card">
     <div class="chips" id="i-cm-chips">
@@ -562,7 +588,7 @@
     </div>
   </div>
 
-  <!-- SHOOTING -->
+  <!-- ── SHOOTING PHOTO ── -->
   <div class="section-title"><div class="bar"></div><h3>Shooting Photo</h3></div>
   <div class="card">
     <div class="grid-3">
@@ -581,7 +607,7 @@
     </div>
   </div>
 
-  <!-- VIDÉO -->
+  <!-- ── PRODUCTION VIDÉO ── -->
   <div class="section-title"><div class="bar"></div><h3>Production Vidéo</h3></div>
   <div class="card">
     <div class="grid-3">
@@ -600,7 +626,7 @@
     </div>
   </div>
 
-  <!-- CHARTE -->
+  <!-- ── CHARTE & NOTES ── -->
   <div class="section-title"><div class="bar"></div><h3>Charte & Notes</h3></div>
   <div class="card">
     <div class="grid-2">
@@ -614,187 +640,33 @@
           <option>À moderniser</option>
         </select>
       </div>
-      <div class="field"><label>Livrables Graphiques</label><input id="i-livrables" type="text" placeholder="Ex: Templates Instagram, Stories, Covers…"></div>
-      <div class="field full"><label>Notes / Remarques</label><textarea id="i-notes" placeholder="Informations complémentaires, priorités, budget Ads…"></textarea></div>
+      <div class="field">
+        <label>Livrables Graphiques</label>
+        <input id="i-livrables" type="text" placeholder="Ex: Templates Instagram, Stories, Covers…">
+      </div>
+      <div class="field full">
+        <label>Notes / Remarques</label>
+        <textarea id="i-notes" placeholder="Informations complémentaires, priorités, budget Ads…"></textarea>
+      </div>
     </div>
   </div>
 
-  <button class="btn-submit" onclick="genererLigne('interne')">
+  <button class="btn-submit" onclick="genererLigne()">
     <span>⚡</span> Générer la ligne pour Google Sheets
   </button>
 
   <div class="copy-box" id="i-result" style="display:none">
     <h4>📋 Ligne à coller dans Google Sheets</h4>
     <pre id="i-result-text"></pre>
-    <button class="btn-copy" onclick="copierLigne('i-result-text')">📋 Copier</button>
+    <button class="btn-copy" onclick="copierLigne()">📋 Copier</button>
   </div>
-</div>
-
-
-<!-- ════════════════════════════════════════════
-     BRIEF CLIENT
-════════════════════════════════════════════ -->
-<div class="form-panel" id="panel-client">
-
-  <div class="form-header">
-    <div class="form-icon">📋</div>
-    <div>
-      <h2>Brief Client — Fiche de Démarrage</h2>
-      <p>À remplir par le client avant le lancement de la mission</p>
-    </div>
-  </div>
-
-  <div class="info-box">
-    <strong>Cher client,</strong> bienvenue chez DigiLab Solutions ! Merci de remplir ce formulaire pour que nous puissions créer du contenu parfaitement adapté à votre entreprise. Cela ne prend que 5 minutes ☀️
-  </div>
-
-  <!-- ENTREPRISE -->
-  <div class="section-title"><div class="bar"></div><h3>Votre Entreprise</h3></div>
-  <div class="card">
-    <div class="grid-2">
-      <div class="field"><label>Nom de l'entreprise <span class="req">*</span></label><input id="c-nom" type="text" placeholder="Nom officiel"></div>
-      <div class="field"><label>Votre nom & prénom <span class="req">*</span></label><input id="c-contact" type="text" placeholder="Prénom NOM"></div>
-      <div class="field"><label>Téléphone <span class="req">*</span></label><input id="c-tel" type="text" placeholder="+216 XX XXX XXX"></div>
-      <div class="field"><label>Email professionnel <span class="req">*</span></label><input id="c-email" type="email" placeholder="vous@entreprise.tn"></div>
-      <div class="field"><label>Site web</label><input id="c-site" type="text" placeholder="www.votresite.tn"></div>
-      <div class="field">
-        <label>Secteur d'activité</label>
-        <select id="c-secteur">
-          <option value="">— Choisir —</option>
-          <option>Retail</option><option>Restauration</option><option>Immobilier</option>
-          <option>Santé</option><option>Mode & Beauté</option><option>Tech</option>
-          <option>Éducation</option><option>Services</option><option>Industrie</option><option>Autre</option>
-        </select>
-      </div>
-      <div class="field full"><label>Décrivez votre activité principale en 1-2 phrases</label><textarea id="c-activite" placeholder="Ex: Nous vendons des vêtements et accessoires de mode femme haut de gamme à Tunis…" style="min-height:60px"></textarea></div>
-    </div>
-  </div>
-
-  <!-- RÉSEAUX -->
-  <div class="section-title"><div class="bar"></div><h3>Vos Réseaux Sociaux Existants</h3></div>
-  <div class="card">
-    <div class="grid-2">
-      <div class="field"><label>Instagram @</label><input id="c-insta" type="text" placeholder="@votre_compte"></div>
-      <div class="field"><label>Facebook</label><input id="c-fb" type="text" placeholder="facebook.com/votrepage"></div>
-      <div class="field"><label>TikTok @</label><input id="c-tiktok" type="text" placeholder="@votre_compte"></div>
-      <div class="field"><label>LinkedIn</label><input id="c-linkedin" type="text" placeholder="linkedin.com/company/..."></div>
-    </div>
-  </div>
-
-  <!-- CIBLE -->
-  <div class="section-title"><div class="bar"></div><h3>Votre Cible & Communication</h3></div>
-  <div class="card">
-    <div class="grid-2">
-      <div class="field full"><label>Qui est votre client idéal ?</label><textarea id="c-cible" placeholder="Ex: Femmes 25-45 ans, cadres supérieures, intéressées par la mode et le bien-être…" style="min-height:60px"></textarea></div>
-      <div class="field full">
-        <label>Quel ton souhaitez-vous pour votre communication ?</label>
-        <div class="chips" id="c-ton-chips">
-          <span class="chip" onclick="selectTon(this,'c')">Professionnel / Sérieux</span>
-          <span class="chip" onclick="selectTon(this,'c')">Décontracté / Sympa</span>
-          <span class="chip" onclick="selectTon(this,'c')">Humoristique / Fun</span>
-          <span class="chip" onclick="selectTon(this,'c')">Éducatif / Informatif</span>
-          <span class="chip" onclick="selectTon(this,'c')">Premium / Luxe</span>
-          <span class="chip" onclick="selectTon(this,'c')">Inspirant / Motivant</span>
-        </div>
-        <input type="hidden" id="c-ton" value="">
-      </div>
-      <div class="field full"><label>Quels sont vos 3 concurrents principaux ?</label><input id="c-concurrents" type="text" placeholder="Ex: Boutique X, Marque Y, Enseigne Z"></div>
-    </div>
-  </div>
-
-  <!-- CONTENUS SOUHAITÉS -->
-  <div class="section-title"><div class="bar"></div><h3>Contenus Souhaités</h3></div>
-  <div class="card">
-    <p style="font-size:12px;color:var(--gray-text);margin-bottom:16px;">Sélectionnez les types de contenu que vous souhaitez inclure dans votre offre :</p>
-    <div class="chips">
-      <span class="chip" onclick="toggleChip(this)">📸 Posts Photos</span>
-      <span class="chip" onclick="toggleChip(this)">🎬 Reels / Vidéos courtes</span>
-      <span class="chip" onclick="toggleChip(this)">📖 Stories quotidiennes</span>
-      <span class="chip" onclick="toggleChip(this)">🎠 Carrousels</span>
-      <span class="chip" onclick="toggleChip(this)">💼 Articles LinkedIn</span>
-      <span class="chip" onclick="toggleChip(this)">🎯 Publications Promo</span>
-      <span class="chip" onclick="toggleChip(this)">📷 Shooting Photo</span>
-      <span class="chip" onclick="toggleChip(this)">🎥 Production Vidéo</span>
-      <span class="chip" onclick="toggleChip(this)">🎨 Motion Design</span>
-    </div>
-  </div>
-
-  <!-- SERVICES CM -->
-  <div class="section-title"><div class="bar"></div><h3>Services de Community Management</h3></div>
-  <div class="card">
-    <p style="font-size:12px;color:var(--gray-text);margin-bottom:16px;">Souhaitez-vous que DigiLab gère ces services pour vous ?</p>
-    <div class="chips">
-      <span class="chip" onclick="toggleChip(this)">💬 Réponse aux commentaires</span>
-      <span class="chip" onclick="toggleChip(this)">✉️ Réponse aux messages (DM)</span>
-      <span class="chip" onclick="toggleChip(this)">⭐ Gestion des avis / reviews</span>
-      <span class="chip" onclick="toggleChip(this)">🛡️ Modération contenus</span>
-      <span class="chip" onclick="toggleChip(this)">📅 Calendrier éditorial mensuel</span>
-      <span class="chip" onclick="toggleChip(this)">📢 Gestion publicités (Ads)</span>
-      <span class="chip" onclick="toggleChip(this)">#️⃣ Stratégie Hashtags</span>
-      <span class="chip" onclick="toggleChip(this)">🔍 SEO Social</span>
-      <span class="chip" onclick="toggleChip(this)">🤝 Collaboration Influenceurs</span>
-    </div>
-  </div>
-
-  <!-- CHARTE -->
-  <div class="section-title"><div class="bar"></div><h3>Identité Visuelle</h3></div>
-  <div class="card">
-    <div class="grid-2">
-      <div class="field full">
-        <label>Avez-vous déjà une charte graphique ?</label>
-        <div class="chips">
-          <span class="chip" onclick="selectCharte(this)">✅ Oui, charte complète</span>
-          <span class="chip" onclick="selectCharte(this)">🔶 Logo seulement</span>
-          <span class="chip" onclick="selectCharte(this)">🆕 Non, à créer</span>
-          <span class="chip" onclick="selectCharte(this)">♻️ À moderniser</span>
-        </div>
-        <input type="hidden" id="c-charte" value="">
-      </div>
-      <div class="field full"><label>Couleurs de votre marque (si existantes)</label><input id="c-couleurs" type="text" placeholder="Ex: Noir, Doré, Blanc — ou codes hex #..."></div>
-      <div class="field full"><label>Avez-vous des exemples de comptes / styles que vous aimez ?</label><textarea id="c-inspo" placeholder="Ex: @marque_exemple, j'aime le style minimaliste luxe de…" style="min-height:60px"></textarea></div>
-    </div>
-  </div>
-
-  <!-- OBJECTIFS -->
-  <div class="section-title"><div class="bar"></div><h3>Vos Objectifs</h3></div>
-  <div class="card">
-    <div class="field"><label>Qu'attendez-vous de DigiLab ? (objectifs principaux)</label>
-    <div class="chips" style="margin-top:8px">
-      <span class="chip" onclick="toggleChip(this)">📈 Augmenter ma visibilité</span>
-      <span class="chip" onclick="toggleChip(this)">🛒 Générer des ventes</span>
-      <span class="chip" onclick="toggleChip(this)">👥 Gagner des abonnés</span>
-      <span class="chip" onclick="toggleChip(this)">💼 Crédibilité / Image de marque</span>
-      <span class="chip" onclick="toggleChip(this)">🌍 Lancement d'un nouveau produit</span>
-      <span class="chip" onclick="toggleChip(this)">📣 Événement à promouvoir</span>
-    </div></div>
-    <div class="field" style="margin-top:16px"><label>Informations supplémentaires ou questions</label><textarea id="c-notes" placeholder="Partagez tout ce qui pourrait nous aider à mieux vous accompagner…"></textarea></div>
-  </div>
-
-  <button class="btn-submit" onclick="genererLigne('client')" style="background:var(--black);color:var(--white)">
-    <span>📤</span> Envoyer mon Brief
-  </button>
-
-  <div class="copy-box" id="c-result" style="display:none">
-    <h4>✅ Brief reçu — Résumé pour l'équipe DigiLab</h4>
-    <pre id="c-result-text"></pre>
-    <button class="btn-copy" onclick="copierLigne('c-result-text')">📋 Copier le résumé</button>
-  </div>
-</div>
 
 </div><!-- /forms-wrap -->
 
 <div class="success-toast" id="toast">✅ Copié dans le presse-papier !</div>
 
 <script>
-// ── TAB SWITCH ────────────────────────────────────────────
-function switchTab(panel, btn) {
-  document.querySelectorAll('.form-panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-tab').forEach(b => b.classList.remove('active'));
-  document.getElementById('panel-' + panel).classList.add('active');
-  btn.classList.add('active');
-}
-
-// ── STEPPER ───────────────────────────────────────────────
+// ── STEPPER ─────────────────────────────────────────────
 function step(id, delta) {
   const el = document.getElementById(id);
   const v = parseInt(el.value) || 0;
@@ -802,13 +674,12 @@ function step(id, delta) {
   calcAuto();
 }
 
-// ── AUTO CALC (÷ 4) ───────────────────────────────────────
+// ── AUTO CALC ────────────────────────────────────────────
 function calcAuto() {
-  const g = (id) => parseInt(document.getElementById(id)?.value) || 0;
-  const s = (id, v) => { const el = document.getElementById(id); if(el) el.value = v; };
-  const sem = (v) => v > 0 ? (v/4).toFixed(1).replace('.0','') : '0';
+  const g   = (id) => parseInt(document.getElementById(id)?.value) || 0;
+  const s   = (id, v) => { const el = document.getElementById(id); if (el) el.value = v; };
+  const sem = (v)  => v > 0 ? parseFloat((v / 4).toFixed(1)).toString() : '0';
 
-  // Posts
   s('i-posts-sem',   sem(g('i-posts')));
   s('i-reels-sem',   sem(g('i-reels')));
   s('i-stories-sem', sem(g('i-stories')));
@@ -826,169 +697,148 @@ function calcAuto() {
   s('i-motion-sem',     sem(g('i-motion')));
 }
 
-// ── CHIPS ─────────────────────────────────────────────────
-function toggleChip(el) {
-  el.classList.toggle('selected');
+// ── DURÉE AUTO ───────────────────────────────────────────
+function calcDuree() {
+  const sig = document.getElementById('i-date-sig').value;
+  const fin = document.getElementById('i-date-fin').value;
+  if (sig && fin) {
+    const d1 = new Date(sig), d2 = new Date(fin);
+    const months = (d2.getFullYear() - d1.getFullYear()) * 12 + (d2.getMonth() - d1.getMonth());
+    document.getElementById('i-duree').value = Math.max(0, months);
+  }
 }
+// Recalc on signature date change too
+document.getElementById('i-date-sig').addEventListener('input', calcDuree);
+
+// ── CHIPS ────────────────────────────────────────────────
+function toggleChip(el) { el.classList.toggle('selected'); }
 
 function toggleOuiNon(el, hiddenId, val) {
   const parent = el.closest('.chips') || el.parentElement;
-  parent.querySelectorAll('.chip').forEach(c => {
-    c.classList.remove('selected','selected-green','selected-red');
-  });
-  const cls = val === 'Oui' ? 'selected-green' : 'selected-red';
-  el.classList.add(cls);
+  parent.querySelectorAll('.chip').forEach(c => c.classList.remove('selected','selected-green','selected-red'));
+  el.classList.add(val === 'Oui' ? 'selected-green' : 'selected-red');
   document.getElementById(hiddenId).value = val;
 }
 
-function selectStatut(el, prefix) {
-  document.querySelectorAll(`#${prefix}-statut-chips .statut-chip`).forEach(c => c.classList.remove('sel'));
+function selectStatut(el) {
+  document.querySelectorAll('#i-statut-chips .statut-chip').forEach(c => c.classList.remove('sel'));
   el.classList.add('sel');
-  document.getElementById(prefix + '-statut').value = el.dataset.val;
+  document.getElementById('i-statut').value = el.dataset.val;
 }
 
-function selectTon(el, prefix) {
-  document.querySelectorAll('#c-ton-chips .chip').forEach(c => c.classList.remove('selected'));
-  el.classList.add('selected');
-  document.getElementById('c-ton').value = el.textContent.trim();
+// ── AFFECTÉ À ────────────────────────────────────────────
+function selectAffected(el) {
+  document.querySelectorAll('#i-affected-chips .affected-chip').forEach(c => c.classList.remove('sel'));
+  el.classList.add('sel');
+  document.getElementById('i-affected').value = el.dataset.val;
+  document.getElementById('i-affected-custom').value = '';
 }
 
-function selectCharte(el) {
-  el.closest('.chips').querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
-  el.classList.add('selected');
-  document.getElementById('c-charte').value = el.textContent.replace(/^[^\s]+\s/,'').trim();
+function onCustomAffected(input) {
+  document.querySelectorAll('#i-affected-chips .affected-chip').forEach(c => c.classList.remove('sel'));
+  document.getElementById('i-affected').value = input.value;
 }
 
-// ── GET SELECTED CHIPS TEXT ───────────────────────────────
-function getChips(containerId) {
-  return [...document.querySelectorAll(`#${containerId} .chip.selected`)].map(c => c.textContent.trim()).join(', ');
+// ── CM SERVICES ──────────────────────────────────────────
+function getCM() {
+  const keys = ['Rép. Commentaires','Rép. Messages DM','Gestion Avis','Modération',
+                'Calendrier Éditorial','Gestion Ads','Hashtag Strategy','SEO Social','Collab Influenceurs'];
+  const selected = [...document.querySelectorAll('#i-cm-chips .chip.selected')].map(c => c.textContent.trim());
+  return keys.reduce((acc, k) => { acc[k] = selected.includes(k); return acc; }, {});
 }
 
-// ── FORMAT DATE ───────────────────────────────────────────
+// ── FORMAT DATE ──────────────────────────────────────────
 function fmtDate(val) {
   if (!val) return '';
-  const [y,m,d] = val.split('-');
+  const [y, m, d] = val.split('-');
   return `${d}/${m}/${y}`;
 }
 
-// ── GET CM SERVICES (Oui/Non per service) ────────────────
-function getCM() {
-  const map = {
-    'Rép. Commentaires': false, 'Rép. Messages DM': false, 'Gestion Avis': false,
-    'Modération': false, 'Calendrier Éditorial': false, 'Gestion Ads': false,
-    'Hashtag Strategy': false, 'SEO Social': false, 'Collab Influenceurs': false
-  };
-  document.querySelectorAll('#i-cm-chips .chip.selected').forEach(c => {
-    const t = c.textContent.trim();
-    if (map.hasOwnProperty(t)) map[t] = true;
+// ── GENERATE LINE ────────────────────────────────────────
+function genererLigne() {
+  const g  = (id) => document.getElementById(id)?.value || '';
+  const n  = (id) => parseInt(document.getElementById(id)?.value) || 0;
+  const cm = getCM();
+
+  // Columns in exact CSV order
+  // CLIENT: Nom Client, Interlocuteur, Secteur, Instagram@, Facebook@, TikTok@, LinkedIn@, Ton de comm.
+  // CONTRAT: Statut, Date Sig, Date Fin, Durée(auto)
+  // CONTENU: Posts/mois, Posts/sem(auto), Reels/mois, Reels/sem(auto), Stories/mois, Stories/sem(auto),
+  //          Carrousels/mois, Carrousels/sem(auto), Articles/mois, PromoPubl/mois, TOTAL/mois(auto), TOTAL/sem(auto)
+  // CM: 9 Oui/Non
+  // SHOOTING: Inclus, PhotosProd, PhotosLife, TotalMois(auto), TotalSem(auto)
+  // VIDEO: Incluse, ReelsProd, ReelsSem(auto), Motion, MotionSem(auto)
+  // CHARTE: Charte, Livrables, Notes
+  // + Affecté à (appended at end)
+
+  const postsS   = n('i-posts')      > 0 ? parseFloat((n('i-posts')     /4).toFixed(1)) : 0;
+  const reelsS   = n('i-reels')      > 0 ? parseFloat((n('i-reels')     /4).toFixed(1)) : 0;
+  const storiesS = n('i-stories')    > 0 ? parseFloat((n('i-stories')   /4).toFixed(1)) : 0;
+  const carrouS  = n('i-carrou')     > 0 ? parseFloat((n('i-carrou')    /4).toFixed(1)) : 0;
+  const total    = n('i-posts') + n('i-reels') + n('i-stories') + n('i-carrou') + n('i-articles') + n('i-promo');
+  const totalS   = total > 0 ? parseFloat((total/4).toFixed(1)) : 0;
+  const tp       = n('i-photos-prod') + n('i-photos-life');
+  const tpS      = tp    > 0 ? parseFloat((tp   /4).toFixed(1)) : 0;
+  const rpS      = n('i-reels-prod') > 0 ? parseFloat((n('i-reels-prod')/4).toFixed(1)) : 0;
+  const motS     = n('i-motion')     > 0 ? parseFloat((n('i-motion')    /4).toFixed(1)) : 0;
+
+  const cols = [
+    g('i-nom'), g('i-contact'), g('i-secteur'),
+    g('i-insta'), g('i-fb'), g('i-tiktok'), g('i-linkedin'), g('i-ton'),
+    g('i-statut'), fmtDate(g('i-date-sig')), fmtDate(g('i-date-fin')), g('i-duree'),
+    n('i-posts'), postsS,
+    n('i-reels'), reelsS,
+    n('i-stories'), storiesS,
+    n('i-carrou'), carrouS,
+    n('i-articles'), n('i-promo'), total, totalS,
+    cm['Rép. Commentaires']    ? 'Oui' : 'Non',
+    cm['Rép. Messages DM']     ? 'Oui' : 'Non',
+    cm['Gestion Avis']         ? 'Oui' : 'Non',
+    cm['Modération']           ? 'Oui' : 'Non',
+    cm['Calendrier Éditorial'] ? 'Oui' : 'Non',
+    cm['Gestion Ads']          ? 'Oui' : 'Non',
+    cm['Hashtag Strategy']     ? 'Oui' : 'Non',
+    cm['SEO Social']           ? 'Oui' : 'Non',
+    cm['Collab Influenceurs']  ? 'Oui' : 'Non',
+    g('i-shooting'), n('i-photos-prod'), n('i-photos-life'), tp, tpS,
+    g('i-video'), n('i-reels-prod'), rpS, n('i-motion'), motS,
+    g('i-charte'), g('i-livrables'), g('i-notes'),
+    g('i-affected')
+  ];
+
+  const labels = [
+    'Nom Client','Interlocuteur','Secteur',
+    'Instagram @','Facebook @','TikTok @','LinkedIn @','Ton de comm.',
+    'Statut Offre','Date Signature','Date Fin','Durée (mois)',
+    'Posts /mois','Posts /sem',
+    'Reels /mois','Reels /sem',
+    'Stories /mois','Stories /sem',
+    'Carrousels /mois','Carrousels /sem',
+    'Articles LinkedIn /mois','Publ. Promo /mois','TOTAL publ. /mois','TOTAL publ. /sem',
+    'Rép. Commentaires','Rép. Messages DM','Gestion Avis','Modération',
+    'Calendrier Éditorial','Gestion Ads','Hashtag Strategy','SEO Social','Collab Influenceurs',
+    'Shooting Inclus','Photos Produit /mois','Photos Lifestyle /mois','Total Photos /mois','Total Photos /sem',
+    'Prod. Vidéo Incluse','Reels Prod. /mois','Reels Prod. /sem','Motion Design /mois','Motion Design /sem',
+    'Charte Graphique','Livrables Graphiques','Notes / Remarques',
+    'Affecté à'
+  ];
+
+  let html = '';
+  labels.forEach((l, i) => {
+    html += `<span class="key">${l.padEnd(28)}</span>  <span class="val">${cols[i] ?? ''}</span>\n`;
   });
-  return map;
-}
 
-// ── GENERATE LINE ─────────────────────────────────────────
-function genererLigne(type) {
-  if (type === 'interne') {
-    const g = (id) => document.getElementById(id)?.value || '';
-    const n = (id) => parseInt(document.getElementById(id)?.value) || 0;
-    const cm = getCM();
+  window._clipboardData = cols.map(c => String(c ?? '')).join('\t');
 
-    const cols = [
-      g('i-nom'), g('i-contact'), g('i-tel'), g('i-email'), g('i-secteur'),
-      g('i-insta'), g('i-fb'), g('i-tiktok'), g('i-linkedin'), g('i-ton'),
-      g('i-statut'), fmtDate(g('i-date-sig')), fmtDate(g('i-date-fin')),
-      // AUTO: Durée
-      n('i-posts'), // Posts /mois
-      // AUTO: Posts /sem
-      n('i-reels'), // Reels /mois
-      // AUTO: Reels /sem
-      n('i-stories'),
-      // AUTO: Stories /sem
-      n('i-carrou'),
-      // AUTO: Carrousels /sem
-      n('i-articles'), n('i-promo'),
-      // AUTO: TOTAL /mois, TOTAL /sem
-      cm['Rép. Commentaires']?'Oui':'Non',
-      cm['Rép. Messages DM']?'Oui':'Non',
-      cm['Gestion Avis']?'Oui':'Non',
-      cm['Modération']?'Oui':'Non',
-      cm['Calendrier Éditorial']?'Oui':'Non',
-      cm['Gestion Ads']?'Oui':'Non',
-      cm['Hashtag Strategy']?'Oui':'Non',
-      cm['SEO Social']?'Oui':'Non',
-      cm['Collab Influenceurs']?'Oui':'Non',
-      g('i-shooting'), n('i-photos-prod'), n('i-photos-life'),
-      // AUTO: Total Photos /mois, /sem
-      g('i-video'), n('i-reels-prod'),
-      // AUTO: Reels Prod /sem
-      n('i-motion'),
-      // AUTO: Motion /sem
-      g('i-charte'), g('i-livrables'), g('i-notes')
-    ];
-
-    const labels = [
-      'Nom Client','Interlocuteur','Téléphone','Email','Secteur',
-      'Instagram @','Facebook @','TikTok @','LinkedIn @','Ton de comm.',
-      'Statut Offre','Date Signature','Date Fin',
-      'Posts /mois','Reels /mois','Stories /mois','Carrousels /mois',
-      'Articles LinkedIn /mois','Publ. Promo /mois',
-      'Rép. Commentaires','Rép. Messages DM','Gestion Avis','Modération',
-      'Calendrier Éditorial','Gestion Ads','Hashtag Strategy','SEO Social','Collab Influenceurs',
-      'Shooting Inclus','Photos Produit /mois','Photos Lifestyle /mois',
-      'Prod. Vidéo Incluse','Reels Prod. /mois','Motion Design /mois',
-      'Charte Graphique','Livrables Graphiques','Notes / Remarques'
-    ];
-
-    let html = '';
-    labels.forEach((l,i) => {
-      html += `<span class="key">${l.padEnd(28)}</span>  <span class="val">${cols[i] ?? ''}</span>\n`;
-    });
-
-    // Tab-separated for paste
-    window._clipboardData = cols.map(c => String(c ?? '')).join('\t');
-
-    document.getElementById('i-result-text').innerHTML = html;
-    document.getElementById('i-result').style.display = 'block';
-    document.getElementById('i-result').scrollIntoView({behavior:'smooth', block:'start'});
-
-  } else {
-    // Client brief summary
-    const g = (id) => document.getElementById(id)?.value || '';
-    const lines = [
-      ['Entreprise',       g('c-nom')],
-      ['Contact',          g('c-contact')],
-      ['Téléphone',        g('c-tel')],
-      ['Email',            g('c-email')],
-      ['Site Web',         g('c-site')],
-      ['Secteur',          g('c-secteur')],
-      ['Activité',         g('c-activite')],
-      ['Instagram @',      g('c-insta')],
-      ['Facebook',         g('c-fb')],
-      ['TikTok @',         g('c-tiktok')],
-      ['LinkedIn',         g('c-linkedin')],
-      ['Cible',            g('c-cible')],
-      ['Ton souhaité',     g('c-ton')],
-      ['Concurrents',      g('c-concurrents')],
-      ['Contenus voulus',  getChips('panel-client .chips')],
-      ['Services CM',      getChips('panel-client')],
-      ['Charte',           g('c-charte')],
-      ['Couleurs marque',  g('c-couleurs')],
-      ['Inspirations',     g('c-inspo')],
-      ['Notes',            g('c-notes')],
-    ];
-    let html = '';
-    lines.forEach(([k,v]) => {
-      if(v) html += `<span class="key">${k.padEnd(20)}</span>  <span class="val">${v}</span>\n`;
-    });
-    window._clipboardData = lines.filter(([k,v])=>v).map(([k,v])=>`${k}: ${v}`).join('\n');
-    document.getElementById('c-result-text').innerHTML = html;
-    document.getElementById('c-result').style.display = 'block';
-    document.getElementById('c-result').scrollIntoView({behavior:'smooth'});
-  }
+  document.getElementById('i-result-text').innerHTML = html;
+  const box = document.getElementById('i-result');
+  box.style.display = 'block';
+  box.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 // ── COPY ─────────────────────────────────────────────────
-function copierLigne(id) {
-  const text = window._clipboardData || document.getElementById(id).textContent;
+function copierLigne() {
+  const text = window._clipboardData || document.getElementById('i-result-text').textContent;
   navigator.clipboard.writeText(text).then(() => {
     const t = document.getElementById('toast');
     t.classList.add('show');
