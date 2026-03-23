@@ -448,7 +448,8 @@
   </div>
 
   <div class="info-box">
-    <strong>Comment utiliser ?</strong> Remplis le formulaire → clique <em>Générer la ligne</em> → copie le résultat → colle-le dans ton Google Sheets (ligne suivante disponible).
+    <strong>Comment utiliser ?</strong> Remplis le formulaire → clique <em>Générer la ligne</em> → copie le résultat → colle-le dans ton Google Sheets.
+    L'ordre exporté suit exactement le CSV <em>Suivi Clients &amp; Offres</em> sur 46 colonnes.
   </div>
 
   <!-- ── IDENTITÉ CLIENT ── -->
@@ -480,23 +481,6 @@
           <option>Éducatif</option><option>Premium / Luxe</option><option>Inspirant</option>
         </select>
       </div>
-    </div>
-  </div>
-
-  <!-- ── AFFECTÉ À ── -->
-  <div class="section-title"><div class="bar"></div><h3>Affecté à</h3></div>
-  <div class="card">
-    <div class="field">
-      <label>Membre de l'équipe en charge <span class="req">*</span></label>
-      <div class="affected-chips" id="i-affected-chips">
-        <span class="affected-chip" data-val="imen"   onclick="selectAffected(this)">imen</span>
-        <span class="affected-chip" data-val="Radhia"  onclick="selectAffected(this)">Radhia</span>
-        <span class="affected-chip" data-val="Yessmine" onclick="selectAffected(this)">Yessmine</span>
-        <span class="affected-chip" data-val="Hassen"  onclick="selectAffected(this)">Hassen</span>
-        <span class="affected-chip" data-val="Maissa"  onclick="selectAffected(this)">Maissa</span>
-      </div>
-      <input type="hidden" id="i-affected" value="">
-      <input id="i-affected-custom" type="text" placeholder="Autre — saisir un nom…" style="margin-top:10px" oninput="onCustomAffected(this)">
     </div>
   </div>
 
@@ -726,19 +710,6 @@ function selectStatut(el) {
   document.getElementById('i-statut').value = el.dataset.val;
 }
 
-// ── AFFECTÉ À ────────────────────────────────────────────
-function selectAffected(el) {
-  document.querySelectorAll('#i-affected-chips .affected-chip').forEach(c => c.classList.remove('sel'));
-  el.classList.add('sel');
-  document.getElementById('i-affected').value = el.dataset.val;
-  document.getElementById('i-affected-custom').value = '';
-}
-
-function onCustomAffected(input) {
-  document.querySelectorAll('#i-affected-chips .affected-chip').forEach(c => c.classList.remove('sel'));
-  document.getElementById('i-affected').value = input.value;
-}
-
 // ── CM SERVICES ──────────────────────────────────────────
 function getCM() {
   const keys = ['Rép. Commentaires','Rép. Messages DM','Gestion Avis','Modération',
@@ -769,7 +740,7 @@ function genererLigne() {
   // SHOOTING: Inclus, PhotosProd, PhotosLife, TotalMois(auto), TotalSem(auto)
   // VIDEO: Incluse, ReelsProd, ReelsSem(auto), Motion, MotionSem(auto)
   // CHARTE: Charte, Livrables, Notes
-  // + Affecté à (appended at end)
+  // This export matches the CSV "Suivi Clients & Offres" exactly.
 
   const postsS   = n('i-posts')      > 0 ? parseFloat((n('i-posts')     /4).toFixed(1)) : 0;
   const reelsS   = n('i-reels')      > 0 ? parseFloat((n('i-reels')     /4).toFixed(1)) : 0;
@@ -802,8 +773,7 @@ function genererLigne() {
     cm['Collab Influenceurs']  ? 'Oui' : 'Non',
     g('i-shooting'), n('i-photos-prod'), n('i-photos-life'), tp, tpS,
     g('i-video'), n('i-reels-prod'), rpS, n('i-motion'), motS,
-    g('i-charte'), g('i-livrables'), g('i-notes'),
-    g('i-affected')
+    g('i-charte'), g('i-livrables'), g('i-notes')
   ];
 
   const labels = [
@@ -819,8 +789,7 @@ function genererLigne() {
     'Calendrier Éditorial','Gestion Ads','Hashtag Strategy','SEO Social','Collab Influenceurs',
     'Shooting Inclus','Photos Produit /mois','Photos Lifestyle /mois','Total Photos /mois','Total Photos /sem',
     'Prod. Vidéo Incluse','Reels Prod. /mois','Reels Prod. /sem','Motion Design /mois','Motion Design /sem',
-    'Charte Graphique','Livrables Graphiques','Notes / Remarques',
-    'Affecté à'
+    'Charte Graphique','Livrables Graphiques','Notes / Remarques'
   ];
 
   let html = '';
